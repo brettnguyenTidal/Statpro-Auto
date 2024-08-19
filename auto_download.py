@@ -105,8 +105,8 @@ try:
     time.sleep(5)
 
     # Move files to the repository directory
-    download_dir = "/home/runner/work/your-repo-name/your-repo-name/downloads"
-    repo_dir = "/home/runner/work/your-repo-name/your-repo-name/repository_folder"
+    download_dir = "/home/runner/work/Statpro-Auto/Statpro-Auto/downloads"
+    repo_dir = "/home/runner/work/Statpro-Auto/Statpro-Auto/repository_folder"
 
     # List all files in the download directory and move them to the repository folder
     files_to_move = [f for f in os.listdir(download_dir) if f.endswith('.csv')]
