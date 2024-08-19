@@ -25,7 +25,7 @@ jobs:
         pip install webdriver_manager
 
     - name: Run Selenium script
-      run: python scripts/auto_download.py
+      run: python auto_download.py
 
     - name: Commit and push changes
       run: |
