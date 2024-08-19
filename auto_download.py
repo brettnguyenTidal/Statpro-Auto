@@ -7,13 +7,25 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.keys import Keys
 import time
 import os
-import shutil
 
-# # Set up headless mode for GitHub Actions environment
+# Set up headless mode for GitHub Actions environment
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument("--headless")
 chrome_options.add_argument("--no-sandbox")
 chrome_options.add_argument("--disable-dev-shm-usage")
+
+# Set download path within the repository
+download_path = os.path.join(os.getcwd(), "downloads")
+if not os.path.exists(download_path):
+    os.makedirs(download_path)
+
+prefs = {
+    "download.default_directory": download_path,
+    "download.prompt_for_download": False,
+    "download.directory_upgrade": True,
+    "safebrowsing.enabled": True
+}
+chrome_options.add_experimental_option("prefs", prefs)
 
 # Initialize WebDriver
 driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
@@ -39,14 +51,10 @@ try:
         test = driver.find_element(By.CSS_SELECTOR, "input[value='Stop the other session and login']")
         test.click()
 
-        
-
     # Navigate and export files for each portfolio
     portfolios = [
         "Return Stacked Global Stocks & Bonds ETF",
         "Return Stacked U.S. Stocks & Futures Yield ETF",
-        # "Return Stacked U.S. Stocks & Managed Futures ETF",
-        # "Return StackedTM Bonds & Managed Futures ETF"
     ]
 
     for portfolio in portfolios:
@@ -72,20 +80,13 @@ try:
 
         time.sleep(10)
         search_bar = driver.find_element(By.ID, "s2id_autogen18")
-        search_bar_value_element = driver.find_element(By.CLASS_NAME, "select2-search-choice") 
+        search_bar_value_element = driver.find_element(By.CLASS_NAME, "select2-search-choice")
         search_bar_value = search_bar_value_element.text
-        if search_bar_value == "return":
-        
-            print(f"{search_bar_value}")
-  
-        else:
-            print(f"{search_bar_value}")
+        if search_bar_value != "return":
             search_bar.send_keys("return")
             search_bar.send_keys(Keys.ENTER)
             time.sleep(10)  # Wait for search results to load
 
-
-        time.sleep(10)
         portfolio_option = driver.find_element(By.CSS_SELECTOR, f"td[data-title='{portfolio}']")
         portfolio_option.click()
 
@@ -103,11 +104,23 @@ try:
         security_option.click()
 
         time.sleep(10)
+        
+        # Capture existing files before export
+        files_before = set(os.listdir(download_path))
+        
         export_button = driver.find_element(By.CSS_SELECTOR, "button[class='btn btn-small export-button hvrbl ']")
         export_button.click()
-        print(f"Export for {portfolio} completed successfully.")
-
-        time.sleep(30)
+        print(f"Export for {portfolio} started successfully.")
+        
+        time.sleep(20)  # Wait for the download to complete
+        
+        # Capture new files after export
+        files_after = set(os.listdir(download_path))
+        new_files = files_after - files_before
+        if len(new_files) == 0:
+            print(f"No new file downloaded for {portfolio}")
+        else:
+            print(f"File downloaded successfully for {portfolio}: {new_files}")
 
     # Logout
     exit_btn = driver.find_element(By.CSS_SELECTOR, "a[class='btn btn-small dropdown-toggle']")
@@ -116,19 +129,8 @@ try:
     logout.click()
     time.sleep(5)
 
-    # # # Move files to the repository directory
-    # download_dir = "/home/runner/work/Statpro-Auto/Statpro-Auto"
-    # repo_dir = "/home/runner/work/Statpro-Auto/Statpro-Auto/repository_folder"
-
-    # # List all files in the download directory and move them to the repository folder
-    # files_to_move = [f for f in os.listdir(download_dir) if f.endswith('.csv')]
-
-    # for file in files_to_move:
-    #     shutil.move(os.path.join(download_dir, file), os.path.join(repo_dir, file))
-
-    print("Files moved to the repository folder.")
-
 except Exception as e:
     print(f"An error occurred: {e}")
 finally:
     driver.quit()
+
