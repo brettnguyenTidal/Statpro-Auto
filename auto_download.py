@@ -9,7 +9,7 @@ import time
 import os
 import shutil
 
-# Set up headless mode for GitHub Actions environment
+# # Set up headless mode for GitHub Actions environment
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument("--headless")
 chrome_options.add_argument("--no-sandbox")
@@ -70,8 +70,18 @@ try:
 
         time.sleep(5)
         search_bar = driver.find_element(By.ID, "s2id_autogen18")
-        search_bar.send_keys(portfolio)
-        search_bar.send_keys(Keys.ENTER)
+        search_bar_value_element = driver.find_element(By.CLASS_NAME, "select2-search-choice") 
+        search_bar_value = search_bar_value_element.text
+        if search_bar_value == "return":
+        
+            print(f"{search_bar_value}")
+  
+        else:
+            print(f"{search_bar_value}")
+            search_bar.send_keys("return")
+            search_bar.send_keys(Keys.ENTER)
+            time.sleep(5)  # Wait for search results to load
+
 
         time.sleep(5)
         portfolio_option = driver.find_element(By.CSS_SELECTOR, f"td[data-title='{portfolio}']")
@@ -104,7 +114,7 @@ try:
     logout.click()
     time.sleep(5)
 
-    # Move files to the repository directory
+    # # Move files to the repository directory
     download_dir = "/home/runner/work/Statpro-Auto/Statpro-Auto/downloads"
     repo_dir = "/home/runner/work/Statpro-Auto/Statpro-Auto/repository_folder"
 
