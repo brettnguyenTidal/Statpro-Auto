@@ -117,7 +117,7 @@ try:
     time.sleep(5)
 
     # # Move files to the repository directory
-    download_dir = "/home/runner/work/Statpro-Auto/Statpro-Auto/downloads"
+    download_dir = "/home/runner/work/Statpro-Auto/Statpro-Auto"
     repo_dir = "/home/runner/work/Statpro-Auto/Statpro-Auto/repository_folder"
 
     # List all files in the download directory and move them to the repository folder
