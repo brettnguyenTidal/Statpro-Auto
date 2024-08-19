@@ -1,0 +1,36 @@
+name: Daily Selenium Run
+
+on:
+  schedule:
+    - cron: '0 21 * * *' 
+    - cron: '0 20 * * *' 
+  workflow_dispatch:
+
+jobs:
+  run-selenium:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        pip install selenium
+        pip install webdriver_manager
+
+    - name: Run Selenium script
+      run: python scripts/auto_download.py
+
+    - name: Commit and push changes
+      run: |
+        git config --global user.email "your_email@example.com"
+        git config --global user.name "Your Name"
+        git add repository_folder/*.csv
+        git commit -m "Update exported files"
+        git push
