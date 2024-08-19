@@ -31,13 +31,13 @@ try:
     login_button.click()
 
     # Check if login was successful
-    time.sleep(5)
+    time.sleep(20)
     current_url = driver.current_url
     if "analytics/#Home/Dashboard" in current_url:
         print("Login successful!")
-    # else:
-    #     test = driver.find_element(By.CSS_SELECTOR, "input[value='Stop the other session and login']")
-    #     test.click()
+    else:
+        test = driver.find_element(By.CSS_SELECTOR, "input[value='Stop the other session and login']")
+        test.click()
 
         
 
