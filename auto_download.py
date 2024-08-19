@@ -42,9 +42,9 @@ try:
     # Navigate and export files for each portfolio
     portfolios = [
         "Return Stacked Global Stocks & Bonds ETF",
-        "Return Stacked U.S. Stocks & Futures Yield ETF",
-        "Return Stacked U.S. Stocks & Managed Futures ETF",
-        "Return StackedTM Bonds & Managed Futures ETF"
+        # "Return Stacked U.S. Stocks & Futures Yield ETF",
+        # "Return Stacked U.S. Stocks & Managed Futures ETF",
+        # "Return StackedTM Bonds & Managed Futures ETF"
     ]
 
     for portfolio in portfolios:
