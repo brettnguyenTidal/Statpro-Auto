@@ -7,6 +7,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.keys import Keys
 import time
 import os
+import shutil
 
 # Set up headless mode for GitHub Actions environment
 chrome_options = webdriver.ChromeOptions()
@@ -120,7 +121,12 @@ try:
         if len(new_files) == 0:
             print(f"No new file downloaded for {portfolio}")
         else:
-            print(f"File downloaded successfully for {portfolio}: {new_files}")
+            for new_file in new_files:
+                if new_file == "Measures.csv":
+                    # Rename the file to include the portfolio name
+                    new_name = f"Measures_{portfolio.replace(' ', '_').replace('&', 'and')}.csv"
+                    os.rename(os.path.join(download_path, new_file), os.path.join(download_path, new_name))
+                    print(f"File renamed to {new_name} for {portfolio}")
 
     # Logout
     exit_btn = driver.find_element(By.CSS_SELECTOR, "a[class='btn btn-small dropdown-toggle']")
@@ -133,4 +139,5 @@ except Exception as e:
     print(f"An error occurred: {e}")
 finally:
     driver.quit()
+
 
