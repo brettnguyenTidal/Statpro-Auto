@@ -31,7 +31,7 @@ try:
     login_button.click()
 
     # Check if login was successful
-    time.sleep(20)
+    time.sleep(10)
     current_url = driver.current_url
     if "analytics/#Home/Dashboard" in current_url:
         print("Login successful!")
