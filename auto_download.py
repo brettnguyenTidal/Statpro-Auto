@@ -56,7 +56,7 @@ try:
         )
         risk_tab.click()
 
-        time.sleep(5)
+        time.sleep(10)
 
         # Open the "Risk Management" dropdown
         risk_management_dropdown = driver.find_element(By.CSS_SELECTOR, "li[data-menu-service-id='MS_RiskManagement_Section']")
@@ -70,7 +70,7 @@ try:
         portfolio_button = driver.find_element(By.CSS_SELECTOR, "a[class='pull-left stat-analysis-toolbar-setting stat-analysis-toolbar-btn-select-portfolio']")
         portfolio_button.click()
 
-        time.sleep(5)
+        time.sleep(10)
         search_bar = driver.find_element(By.ID, "s2id_autogen18")
         search_bar_value_element = driver.find_element(By.CLASS_NAME, "select2-search-choice") 
         search_bar_value = search_bar_value_element.text
@@ -82,14 +82,14 @@ try:
             print(f"{search_bar_value}")
             search_bar.send_keys("return")
             search_bar.send_keys(Keys.ENTER)
-            time.sleep(5)  # Wait for search results to load
+            time.sleep(10)  # Wait for search results to load
 
 
-        time.sleep(5)
+        time.sleep(10)
         portfolio_option = driver.find_element(By.CSS_SELECTOR, f"td[data-title='{portfolio}']")
         portfolio_option.click()
 
-        time.sleep(5)
+        time.sleep(10)
 
         # Select categories and export
         category_button = driver.find_element(By.ID, "s2id_autogen73")
@@ -102,12 +102,12 @@ try:
         security_option = driver.find_element(By.XPATH, "//div[contains(text(),'Security Level')]")
         security_option.click()
 
-        time.sleep(5)
+        time.sleep(10)
         export_button = driver.find_element(By.CSS_SELECTOR, "button[class='btn btn-small export-button hvrbl ']")
         export_button.click()
         print(f"Export for {portfolio} completed successfully.")
 
-        time.sleep(5)
+        time.sleep(10)
 
     # Logout
     exit_btn = driver.find_element(By.CSS_SELECTOR, "a[class='btn btn-small dropdown-toggle']")
