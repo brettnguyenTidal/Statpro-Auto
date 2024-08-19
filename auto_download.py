@@ -32,7 +32,7 @@ try:
 
     # Check if login was successful
     time.sleep(5)
-    current_url = driver.current_url
+    current_url = "https://revolution.statpro.com/"
     if "analytics/#Home/Dashboard" in current_url:
         print("Login successful!")
     else:
