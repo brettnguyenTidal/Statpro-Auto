@@ -45,8 +45,8 @@ try:
     portfolios = [
         "Return Stacked Global Stocks & Bonds ETF",
         "Return Stacked U.S. Stocks & Futures Yield ETF",
-        "Return Stacked U.S. Stocks & Managed Futures ETF",
-        "Return StackedTM Bonds & Managed Futures ETF"
+        # "Return Stacked U.S. Stocks & Managed Futures ETF",
+        # "Return StackedTM Bonds & Managed Futures ETF"
     ]
 
     for portfolio in portfolios:
@@ -107,7 +107,7 @@ try:
         export_button.click()
         print(f"Export for {portfolio} completed successfully.")
 
-        time.sleep(10)
+        time.sleep(30)
 
     # Logout
     exit_btn = driver.find_element(By.CSS_SELECTOR, "a[class='btn btn-small dropdown-toggle']")
@@ -116,15 +116,15 @@ try:
     logout.click()
     time.sleep(5)
 
-    # # Move files to the repository directory
-    download_dir = "/home/runner/work/Statpro-Auto/Statpro-Auto"
-    repo_dir = "/home/runner/work/Statpro-Auto/Statpro-Auto/repository_folder"
+    # # # Move files to the repository directory
+    # download_dir = "/home/runner/work/Statpro-Auto/Statpro-Auto"
+    # repo_dir = "/home/runner/work/Statpro-Auto/Statpro-Auto/repository_folder"
 
-    # List all files in the download directory and move them to the repository folder
-    files_to_move = [f for f in os.listdir(download_dir) if f.endswith('.csv')]
+    # # List all files in the download directory and move them to the repository folder
+    # files_to_move = [f for f in os.listdir(download_dir) if f.endswith('.csv')]
 
-    for file in files_to_move:
-        shutil.move(os.path.join(download_dir, file), os.path.join(repo_dir, file))
+    # for file in files_to_move:
+    #     shutil.move(os.path.join(download_dir, file), os.path.join(repo_dir, file))
 
     print("Files moved to the repository folder.")
 
