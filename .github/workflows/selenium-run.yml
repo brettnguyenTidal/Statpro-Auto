@@ -2,8 +2,7 @@ name: Daily Selenium Run
 
 on:
   schedule:
-    - cron: '0 21 * * *' 
-    - cron: '0 20 * * *' 
+    - cron: '0 13 * * *'  
   workflow_dispatch:
 permissions:
     contents: write
