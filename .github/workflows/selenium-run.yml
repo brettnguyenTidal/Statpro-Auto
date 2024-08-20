@@ -11,6 +11,10 @@ jobs:
   run-selenium:
     runs-on: ubuntu-latest
 
+    env:
+      STATPRO_USERNAME: ${{ secrets.STATPRO_USERNAME }}
+      STATPRO_PASSWORD: ${{ secrets.STATPRO_PASSWORD }}
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
