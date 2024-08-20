@@ -31,6 +31,9 @@ chrome_options.add_experimental_option("prefs", prefs)
 # Initialize WebDriver
 driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
 
+username = os.getenv("STATPRO_USERNAME")
+password = os.getenv("STATPRO_PASSWORD")
+
 try:
     # Open the website
     driver.get("https://revolution.statpro.com/")
@@ -38,8 +41,8 @@ try:
     # Login process
     username_field = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "email")))
     password_field = driver.find_element(By.ID, "password")
-    username_field.send_keys("pshah@tidalfg.com")
-    password_field.send_keys("Tidal12!")
+    username_field.send_keys(username)
+    password_field.send_keys(password)
     login_button = driver.find_element(By.ID, "loginBtn")
     login_button.click()
 
