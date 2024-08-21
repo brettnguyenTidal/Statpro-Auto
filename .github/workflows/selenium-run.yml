@@ -2,7 +2,7 @@ name: Daily Selenium Run
 
 on:
   schedule:
-    - cron: '0 13 * * *'  
+    - cron: '0 11 * * *'  
   workflow_dispatch:
 permissions:
     contents: write
@@ -27,6 +27,7 @@ jobs:
       run: |
         pip install selenium
         pip install webdriver_manager
+        pip install openpyxl
 
     - name: Run Selenium script
       run: python auto_download.py

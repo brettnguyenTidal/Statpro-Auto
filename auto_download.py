@@ -8,6 +8,22 @@ from selenium.webdriver.common.keys import Keys
 import time
 import os
 import shutil
+import openpyxl
+import csv
+from datetime import datetime
+
+# Function to convert text to number if possible
+def convert_to_number(value):
+    try:
+        # Try to convert to integer
+        return int(value)
+    except ValueError:
+        try:
+            # Try to convert to float
+            return float(value)
+        except ValueError:
+            # Return the original value if conversion fails
+            return value
 
 # Set up headless mode for GitHub Actions environment
 chrome_options = webdriver.ChromeOptions()
@@ -33,6 +49,17 @@ driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install())
 
 username = os.getenv("STATPRO_USERNAME")
 password = os.getenv("STATPRO_PASSWORD")
+
+# Define the naming dictionary for the portfolios
+portfolio_naming = {
+    "Return Stacked Global Stocks & Bonds ETF": "RSSB",
+    "Return Stacked U.S. Stocks & Futures Yield ETF": "RSSY",
+    "Return Stacked U.S. Stocks & Managed Futures ETF": "RSST",
+    "Return StackedTM Bonds & Managed Futures ETF": "RSBT"
+}
+
+# Get the current date in the desired format
+current_date = datetime.now().strftime("%m.%d.%y")
 
 try:
     # Open the website
@@ -92,7 +119,8 @@ try:
             search_bar.send_keys("return")
             search_bar.send_keys(Keys.ENTER)
             time.sleep(10)  # Wait for search results to load
-
+            
+        time.sleep(10)
         portfolio_option = driver.find_element(By.CSS_SELECTOR, f"td[data-title='{portfolio}']")
         portfolio_option.click()
 
@@ -129,9 +157,30 @@ try:
             for new_file in new_files:
                 if new_file == "Measures.csv":
                     # Rename the file to include the portfolio name
-                    new_name = f"Measures_{portfolio.replace(' ', '_').replace('&', 'and')}.csv"
-                    os.rename(os.path.join(download_path, new_file), os.path.join(download_path, new_name))
-                    print(f"File renamed to {new_name} for {portfolio}")
+                    portfolio_code = portfolio_naming[portfolio]
+                    new_name_csv = f"{portfolio_code} Risk Decomp {current_date}.csv"
+                    os.rename(os.path.join(download_path, new_file), os.path.join(download_path, new_name_csv))
+                    print(f"CSV file renamed to {new_name_csv} for {portfolio}")
+                    
+                    # Convert the CSV to Excel
+                    csv_file_path = os.path.join(download_path, new_name_csv)
+                    excel_file_path = os.path.join(download_path, f"{portfolio_code} Risk Decomp {current_date}.xlsx")
+                    
+                    # Reading CSV and writing to Excel with number conversion
+                    workbook = openpyxl.Workbook()
+                    sheet = workbook.active
+                    with open(csv_file_path, 'r') as f:
+                        reader = csv.reader(f)
+                        for row in reader:
+                            # Apply number conversion to each cell in the row
+                            converted_row = [convert_to_number(cell) for cell in row]
+                            sheet.append(converted_row)
+                    workbook.save(excel_file_path)
+                    print(f"Converted {new_name_csv} to Excel file {excel_file_path}")
+
+                    # Delete the original CSV file
+                    os.remove(csv_file_path)
+                    print(f"Deleted the original CSV file {csv_file_path}")
 
     # Logout
     exit_btn = driver.find_element(By.CSS_SELECTOR, "a[class='btn btn-small dropdown-toggle']")
@@ -144,5 +193,4 @@ except Exception as e:
     print(f"An error occurred: {e}")
 finally:
     driver.quit()
-
 
