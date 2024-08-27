@@ -12,7 +12,7 @@ import openpyxl
 import csv
 from datetime import datetime
 
-# Function to convert text to number if possible
+# Function to convert text to number
 def convert_to_number(value):
     try:
         # Try to convert to integer
