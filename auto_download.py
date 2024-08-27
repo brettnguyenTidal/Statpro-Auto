@@ -19,7 +19,7 @@ def convert_to_number(value):
         return int(value)
     except ValueError:
         try:
-            # Try to convert to float
+            # convert to float
             return float(value)
         except ValueError:
             # Return the original value if conversion fails
