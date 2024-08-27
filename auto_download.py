@@ -53,6 +53,7 @@ password = os.getenv("STATPRO_PASSWORD")
 # Define the naming dictionary for the portfolios
 portfolio_naming = {
     "Return Stacked Global Stocks & Bonds ETF": "RSSB",
+    "Return Stacked Bonds & Futures Yield ETF" : "RSBY",
     "Return Stacked U.S. Stocks & Futures Yield ETF": "RSSY",
     "Return Stacked U.S. Stocks & Managed Futures ETF": "RSST",
     "Return StackedTM Bonds & Managed Futures ETF": "RSBT"
@@ -85,9 +86,10 @@ try:
     # Navigate and export files for each portfolio
     portfolios = [
         "Return Stacked Global Stocks & Bonds ETF",
+        "Return Stacked Bonds & Futures Yield ETF",
         "Return Stacked U.S. Stocks & Futures Yield ETF",
         "Return Stacked U.S. Stocks & Managed Futures ETF",
-        "Return StackedTM Bonds & Managed Futures ETF"
+        "Return StackedTM Bonds & Managed Futures ETF"    
     ]
 
     for portfolio in portfolios:
