@@ -44,7 +44,7 @@ prefs = {
 }
 chrome_options.add_experimental_option("prefs", prefs)
 
-# Initialize WebDriver
+# WebDriver
 driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
 
 username = os.getenv("STATPRO_USERNAME")
