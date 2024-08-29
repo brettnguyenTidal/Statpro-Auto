@@ -47,8 +47,8 @@ chrome_options.add_experimental_option("prefs", prefs)
 # WebDriver
 driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
 
-username = "Pshah@tidalfg.com"
-password = "Tidal12!"
+username = os.getenv("STATPRO_USERNAME")
+password = os.getenv("STATPRO_PASSWORD")
 
 # Define the naming dictionary for the portfolios
 portfolio_naming = {
