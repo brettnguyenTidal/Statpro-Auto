@@ -63,6 +63,18 @@ portfolio_naming = {
 current_date = datetime.now().strftime("%m.%d.%y")
 
 try:
+    # Delete all files in the downloads folder before starting the process
+    for filename in os.listdir(download_path):
+        file_path = os.path.join(download_path, filename)
+        try:
+            if os.path.isfile(file_path) or os.path.islink(file_path):
+                os.unlink(file_path)
+            elif os.path.isdir(file_path):
+                shutil.rmtree(file_path)
+            print(f"Deleted file: {file_path}")
+        except Exception as e:
+            print(f"Failed to delete {file_path}. Reason: {e}")
+
     # Open the website
     driver.get("https://revolution.statpro.com/")
 
@@ -99,7 +111,7 @@ try:
         )
         risk_tab.click()
 
-        time.sleep(10)
+        time.sleep(20)
 
         # Open the "Risk Management" dropdown
         risk_management_dropdown = driver.find_element(By.CSS_SELECTOR, "li[data-menu-service-id='MS_RiskManagement_Section']")
@@ -113,7 +125,7 @@ try:
         portfolio_button = driver.find_element(By.CSS_SELECTOR, "a[class='pull-left stat-analysis-toolbar-setting stat-analysis-toolbar-btn-select-portfolio']")
         portfolio_button.click()
 
-        time.sleep(10)
+        time.sleep(20)
         search_bar = driver.find_element(By.ID, "s2id_autogen18")
         search_bar_value_element = driver.find_element(By.CLASS_NAME, "select2-search-choice")
         search_bar_value = search_bar_value_element.text
@@ -122,11 +134,11 @@ try:
             search_bar.send_keys(Keys.ENTER)
             time.sleep(10)  # Wait for search results to load
             
-        time.sleep(10)
+        time.sleep(20)
         portfolio_option = driver.find_element(By.CSS_SELECTOR, f"td[data-title='{portfolio}']")
         portfolio_option.click()
 
-        time.sleep(10)
+        time.sleep(20)
 
         # Select categories and export
         category_button = driver.find_element(By.ID, "s2id_autogen73")
@@ -139,7 +151,7 @@ try:
         security_option = driver.find_element(By.XPATH, "//div[contains(text(),'Security Level')]")
         security_option.click()
 
-        time.sleep(10)
+        time.sleep(20)
         
         # Capture existing files before export
         files_before = set(os.listdir(download_path))
