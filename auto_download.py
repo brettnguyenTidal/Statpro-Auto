@@ -47,8 +47,8 @@ chrome_options.add_experimental_option("prefs", prefs)
 # WebDriver
 driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
 
-username = os.getenv("STATPRO_USERNAME")
-password = os.getenv("STATPRO_PASSWORD")
+username = "Pshah@tidalfg.com"
+password = "Tidal12!"
 
 # Define the naming dictionary for the portfolios
 portfolio_naming = {
@@ -87,7 +87,7 @@ try:
     login_button.click()
 
     # Check if login was successful
-    time.sleep(20)
+    time.sleep(40)
     current_url = driver.current_url
     if "analytics/#Home/Dashboard" in current_url:
         print("Login successful!")
@@ -111,7 +111,7 @@ try:
         )
         risk_tab.click()
 
-        time.sleep(20)
+        time.sleep(40)
 
         # Open the "Risk Management" dropdown
         risk_management_dropdown = driver.find_element(By.CSS_SELECTOR, "li[data-menu-service-id='MS_RiskManagement_Section']")
@@ -125,7 +125,7 @@ try:
         portfolio_button = driver.find_element(By.CSS_SELECTOR, "a[class='pull-left stat-analysis-toolbar-setting stat-analysis-toolbar-btn-select-portfolio']")
         portfolio_button.click()
 
-        time.sleep(20)
+        time.sleep(40)
         search_bar = driver.find_element(By.ID, "s2id_autogen18")
         search_bar_value_element = driver.find_element(By.CLASS_NAME, "select2-search-choice")
         search_bar_value = search_bar_value_element.text
@@ -134,11 +134,11 @@ try:
             search_bar.send_keys(Keys.ENTER)
             time.sleep(10)  # Wait for search results to load
             
-        time.sleep(20)
+        time.sleep(40)
         portfolio_option = driver.find_element(By.CSS_SELECTOR, f"td[data-title='{portfolio}']")
         portfolio_option.click()
 
-        time.sleep(20)
+        time.sleep(40)
 
         # Select categories and export
         category_button = driver.find_element(By.ID, "s2id_autogen73")
@@ -151,7 +151,7 @@ try:
         security_option = driver.find_element(By.XPATH, "//div[contains(text(),'Security Level')]")
         security_option.click()
 
-        time.sleep(20)
+        time.sleep(40)
         
         # Capture existing files before export
         files_before = set(os.listdir(download_path))
@@ -160,7 +160,7 @@ try:
         export_button.click()
         print(f"Export for {portfolio} started successfully.")
         
-        time.sleep(20)  # Wait for the download to complete
+        time.sleep(40)  # Wait for the download to complete
         
         # Capture new files after export
         files_after = set(os.listdir(download_path))
