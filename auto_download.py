@@ -99,10 +99,16 @@ try:
     portfolios = [
         "Return Stacked Global Stocks & Bonds ETF",
         "Return Stacked Bonds & Futures Yield ETF",
-        "Return Stacked U.S. Stocks & Futures Yield ETF",
-        "Return Stacked U.S. Stocks & Managed Futures ETF",
-        "Return StackedTM Bonds & Managed Futures ETF"    
+        "Return Stacked U.S. Stocks & Futures Yield ETF"
     ]
+
+    # Adding a delay before processing the last two portfolios
+    time.sleep(5)
+
+    portfolios.extend([
+        "Return Stacked U.S. Stocks & Managed Futures ETF",
+        "Return StackedTM Bonds & Managed Futures ETF"
+    ])
 
     for portfolio in portfolios:
         # Navigate to the risk section
