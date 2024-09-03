@@ -30,6 +30,8 @@ chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument("--headless")
 chrome_options.add_argument("--no-sandbox")
 chrome_options.add_argument("--disable-dev-shm-usage")
+chrome_options.add_argument("--window-size=1920,1080")
+
 
 # Set download path within the repository
 download_path = os.path.join(os.getcwd(), "downloads")
@@ -98,10 +100,10 @@ try:
     # Navigate and export files for each portfolio
     portfolios = [
         "Return Stacked U.S. Stocks & Managed Futures ETF",
-        "Return StackedTM Bonds & Managed Futures ETF",
-        "Return Stacked Global Stocks & Bonds ETF",
-        "Return Stacked Bonds & Futures Yield ETF",
-        "Return Stacked U.S. Stocks & Futures Yield ETF"
+        # "Return StackedTM Bonds & Managed Futures ETF",
+        # "Return Stacked Global Stocks & Bonds ETF",
+        # "Return Stacked Bonds & Futures Yield ETF",
+        # "Return Stacked U.S. Stocks & Futures Yield ETF"
          
     ]
 
@@ -147,9 +149,10 @@ try:
             
         time.sleep(10)
         portfolio_option = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, f"//a[contains(text(),'{portfolio}')]"))
-        )       
-        portfolio_option.click()
+            EC.element_to_be_clickable((By.CSS_SELECTOR, f"td[data-title='{portfolio}']"))
+        )
+         # Use JavaScript to click the element
+        driver.execute_script("arguments[0].click();", portfolio_option)
 
         time.sleep(5)
 
