@@ -98,7 +98,10 @@ try:
     # Navigate and export files for each portfolio
     portfolios = [
         "Return Stacked U.S. Stocks & Managed Futures ETF",
-        
+        "Return StackedTM Bonds & Managed Futures ETF",
+        "Return Stacked Global Stocks & Bonds ETF",
+        "Return Stacked Bonds & Futures Yield ETF",
+        "Return Stacked U.S. Stocks & Futures Yield ETF"
          
     ]
 
@@ -124,28 +127,28 @@ try:
         )
         absolute_risk_link.click()
 
-  
+        time.sleep(10)
         # Select portfolio
         portfolio_button = WebDriverWait(driver, 10).until(
             EC.element_to_be_clickable((By.CSS_SELECTOR, "a[class='pull-left stat-analysis-toolbar-setting stat-analysis-toolbar-btn-select-portfolio']"))
         )
         portfolio_button.click()
 
-        time.sleep(10)
-        # search_bar = WebDriverWait(driver, 10).until(
-        #     EC.element_to_be_clickable((By.ID, "s2id_autogen18"))
-        # )
-        # search_bar_value_element = driver.find_element(By.CLASS_NAME, "select2-search-choice")
-        # search_bar_value = search_bar_value_element.text
-        # if search_bar_value != "return":
-        #     search_bar.send_keys("return")
-        #     search_bar.send_keys(Keys.ENTER)
-        #     time.sleep(10)  # Wait for search results to load
+        time.sleep(5)
+        search_bar = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.ID, "s2id_autogen18"))
+        )
+        search_bar_value_element = driver.find_element(By.CLASS_NAME, "select2-search-choice")
+        search_bar_value = search_bar_value_element.text
+        if search_bar_value != "return":
+            search_bar.send_keys("return")
+            search_bar.send_keys(Keys.ENTER)
+            time.sleep(10)  # Wait for search results to load
             
-        # time.sleep(10)
+        time.sleep(10)
         portfolio_option = WebDriverWait(driver, 10).until(
             EC.element_to_be_clickable((By.XPATH, f"//a[contains(text(),'{portfolio}')]"))
-        )
+        )       
         portfolio_option.click()
 
         time.sleep(5)
