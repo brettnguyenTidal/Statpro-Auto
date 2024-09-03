@@ -27,9 +27,9 @@ def convert_to_number(value):
 
 # Set up headless mode for GitHub Actions environment
 chrome_options = webdriver.ChromeOptions()
-chrome_options.add_argument("--headless")
-chrome_options.add_argument("--no-sandbox")
-chrome_options.add_argument("--disable-dev-shm-usage")
+# chrome_options.add_argument("--headless")
+# chrome_options.add_argument("--no-sandbox")
+# chrome_options.add_argument("--disable-dev-shm-usage")
 
 # Set download path within the repository
 download_path = os.path.join(os.getcwd(), "downloads")
@@ -104,24 +104,25 @@ try:
         "Return StackedTM Bonds & Managed Futures ETF"    
     ]
 
+    
+     # Navigate to the risk section
+    risk_tab = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.ID, "sitePageLink_Compliance_Index"))
+    )
+    risk_tab.click()
+
+    time.sleep(5)
+
+    # Open the "Risk Management" dropdown
+    risk_management_dropdown = driver.find_element(By.CSS_SELECTOR, "li[data-menu-service-id='MS_RiskManagement_Section']")
+    risk_management_dropdown.click()
+
+    time.sleep(5)
+    # Click on "Absolute Risk"
+    absolute_risk_link = driver.find_element(By.CSS_SELECTOR, "a[href='/analytics/Risk#risk/risk-dashboard']")
+    absolute_risk_link.click()
+
     for portfolio in portfolios:
-        # Navigate to the risk section
-        risk_tab = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.ID, "sitePageLink_Compliance_Index"))
-        )
-        risk_tab.click()
-
-        time.sleep(5)
-
-        # Open the "Risk Management" dropdown
-        risk_management_dropdown = driver.find_element(By.CSS_SELECTOR, "li[data-menu-service-id='MS_RiskManagement_Section']")
-        risk_management_dropdown.click()
-
-        time.sleep(5)
-        # Click on "Absolute Risk"
-        absolute_risk_link = driver.find_element(By.CSS_SELECTOR, "a[href='/analytics/Risk#risk/risk-dashboard']")
-        absolute_risk_link.click()
-
         time.sleep(10)
         # Select portfolio
         portfolio_button = driver.find_element(By.CSS_SELECTOR, "a[class='pull-left stat-analysis-toolbar-setting stat-analysis-toolbar-btn-select-portfolio']")
@@ -205,7 +206,6 @@ try:
                     # Delete the original CSV file
                     os.remove(csv_file_path)
                     print(f"Deleted the original CSV file {csv_file_path}")
-        time.sleep(20)
 
     # Logout
     exit_btn = driver.find_element(By.CSS_SELECTOR, "a[class='btn btn-small dropdown-toggle']")
