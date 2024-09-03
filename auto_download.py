@@ -111,23 +111,23 @@ try:
         )
         risk_tab.click()
 
-        time.sleep(20)
+        time.sleep(5)
 
         # Open the "Risk Management" dropdown
         risk_management_dropdown = driver.find_element(By.CSS_SELECTOR, "li[data-menu-service-id='MS_RiskManagement_Section']")
         risk_management_dropdown.click()
 
-        time.sleep(20)
+        time.sleep(5)
         # Click on "Absolute Risk"
         absolute_risk_link = driver.find_element(By.CSS_SELECTOR, "a[href='/analytics/Risk#risk/risk-dashboard']")
         absolute_risk_link.click()
 
-        time.sleep(20)
+        time.sleep(10)
         # Select portfolio
         portfolio_button = driver.find_element(By.CSS_SELECTOR, "a[class='pull-left stat-analysis-toolbar-setting stat-analysis-toolbar-btn-select-portfolio']")
         portfolio_button.click()
 
-        time.sleep(20)
+        time.sleep(5)
         search_bar = driver.find_element(By.ID, "s2id_autogen18")
         search_bar_value_element = driver.find_element(By.CLASS_NAME, "select2-search-choice")
         search_bar_value = search_bar_value_element.text
@@ -136,41 +136,41 @@ try:
             search_bar.send_keys(Keys.ENTER)
             time.sleep(10)  # Wait for search results to load
             
-        time.sleep(20)
+        time.sleep(10)
         portfolio_option = driver.find_element(By.CSS_SELECTOR, f"td[data-title='{portfolio}']")
         portfolio_option.click()
 
-        time.sleep(20)
+        time.sleep(5)
 
         # Select categories and export
         category_button = driver.find_element(By.ID, "s2id_autogen73")
         category_button.click()
 
-        time.sleep(20)
+      
 
         risk_decomposition_option = driver.find_element(By.XPATH, "//div[contains(text(),'Risk Decomposition')]")
         risk_decomposition_option.click()
 
-        time.sleep(20)
+        time.sleep(5)
 
         category_button2 = driver.find_element(By.ID, "s2id_autogen71")
         category_button2.click()
 
-        time.sleep(20)
+        
         security_option = driver.find_element(By.XPATH, "//div[contains(text(),'Security Level')]")
         security_option.click()
 
-        time.sleep(20)
+       
         
         # Capture existing files before export
         files_before = set(os.listdir(download_path))
         
-        time.sleep(20)
+        time.sleep(10)
         export_button = driver.find_element(By.CSS_SELECTOR, "button[class='btn btn-small export-button hvrbl ']")
         export_button.click()
         print(f"Export for {portfolio} started successfully.")
         
-        time.sleep(20)  # Wait for the download to complete
+        time.sleep(10)  # Wait for the download to complete
         
         # Capture new files after export
         files_after = set(os.listdir(download_path))
