@@ -205,6 +205,7 @@ try:
                     # Delete the original CSV file
                     os.remove(csv_file_path)
                     print(f"Deleted the original CSV file {csv_file_path}")
+        time.sleep(20)
 
     # Logout
     exit_btn = driver.find_element(By.CSS_SELECTOR, "a[class='btn btn-small dropdown-toggle']")
