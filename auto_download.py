@@ -144,7 +144,7 @@ try:
             
         # time.sleep(10)
         portfolio_option = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, f"//a[contains(text(),{portfolio})]"))
+            EC.element_to_be_clickable((By.XPATH, f"//a[contains(text(),'{portfolio}')]"))
         )
         portfolio_option.click()
 
