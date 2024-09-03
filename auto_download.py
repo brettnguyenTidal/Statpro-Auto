@@ -27,9 +27,9 @@ def convert_to_number(value):
 
 # Set up headless mode for GitHub Actions environment
 chrome_options = webdriver.ChromeOptions()
-chrome_options.add_argument("--headless")
-chrome_options.add_argument("--no-sandbox")
-chrome_options.add_argument("--disable-dev-shm-usage")
+# chrome_options.add_argument("--headless")
+# chrome_options.add_argument("--no-sandbox")
+# chrome_options.add_argument("--disable-dev-shm-usage")
 
 # Set download path within the repository
 download_path = os.path.join(os.getcwd(), "downloads")
@@ -104,70 +104,84 @@ try:
         "Return StackedTM Bonds & Managed Futures ETF"    
     ]
 
-    
-     # Navigate to the risk section
-    risk_tab = WebDriverWait(driver, 10).until(
-        EC.element_to_be_clickable((By.ID, "sitePageLink_Compliance_Index"))
-    )
-    risk_tab.click()
-
-    time.sleep(5)
-
-    # Open the "Risk Management" dropdown
-    risk_management_dropdown = driver.find_element(By.CSS_SELECTOR, "li[data-menu-service-id='MS_RiskManagement_Section']")
-    risk_management_dropdown.click()
-
-    time.sleep(5)
-    # Click on "Absolute Risk"
-    absolute_risk_link = driver.find_element(By.CSS_SELECTOR, "a[href='/analytics/Risk#risk/risk-dashboard']")
-    absolute_risk_link.click()
-
     for portfolio in portfolios:
+        # Navigate to the risk section
+        risk_tab = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.ID, "sitePageLink_Compliance_Index"))
+        )
+        risk_tab.click()
+
+        time.sleep(5)
+
+        # Open the "Risk Management" dropdown
+        risk_management_dropdown = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, "li[data-menu-service-id='MS_RiskManagement_Section']"))
+        )
+        risk_management_dropdown.click()
+
+        time.sleep(5)
+        # Click on "Absolute Risk"
+        absolute_risk_link = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, "a[href='/analytics/Risk#risk/risk-dashboard']"))
+        )
+        absolute_risk_link.click()
+
         time.sleep(10)
         # Select portfolio
-        portfolio_button = driver.find_element(By.CSS_SELECTOR, "a[class='pull-left stat-analysis-toolbar-setting stat-analysis-toolbar-btn-select-portfolio']")
+        portfolio_button = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, "a[class='pull-left stat-analysis-toolbar-setting stat-analysis-toolbar-btn-select-portfolio']"))
+        )
         portfolio_button.click()
 
-        # time.sleep(5)
-        # search_bar = driver.find_element(By.ID, "s2id_autogen18")
-        # search_bar_value_element = driver.find_element(By.CLASS_NAME, "select2-search-choice")
-        # search_bar_value = search_bar_value_element.text
-        # if search_bar_value != "return":
-        #     search_bar.send_keys("return")
-        #     search_bar.send_keys(Keys.ENTER)
-        #     time.sleep(10)  # Wait for search results to load
+        time.sleep(5)
+        search_bar = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.ID, "s2id_autogen18"))
+        )
+        search_bar_value_element = driver.find_element(By.CLASS_NAME, "select2-search-choice")
+        search_bar_value = search_bar_value_element.text
+        if search_bar_value != "return":
+            search_bar.send_keys("return")
+            search_bar.send_keys(Keys.ENTER)
+            time.sleep(10)  # Wait for search results to load
             
         time.sleep(10)
-        portfolio_option = driver.find_element(By.CSS_SELECTOR, f"td[data-title='{portfolio}']")
+        portfolio_option = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, f"td[data-title='{portfolio}']"))
+        )
         portfolio_option.click()
 
         time.sleep(5)
 
         # Select categories and export
-        category_button = driver.find_element(By.ID, "s2id_autogen73")
+        category_button = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.ID, "s2id_autogen73"))
+        )
         category_button.click()
 
-      
-
-        risk_decomposition_option = driver.find_element(By.XPATH, "//div[contains(text(),'Risk Decomposition')]")
+        risk_decomposition_option = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, "//div[contains(text(),'Risk Decomposition')]"))
+        )
         risk_decomposition_option.click()
 
         time.sleep(5)
 
-        category_button2 = driver.find_element(By.ID, "s2id_autogen71")
+        category_button2 = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.ID, "s2id_autogen71"))
+        )
         category_button2.click()
 
-        
-        security_option = driver.find_element(By.XPATH, "//div[contains(text(),'Security Level')]")
+        security_option = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, "//div[contains(text(),'Security Level')]"))
+        )
         security_option.click()
 
-       
-        
         # Capture existing files before export
         files_before = set(os.listdir(download_path))
         
         time.sleep(10)
-        export_button = driver.find_element(By.CSS_SELECTOR, "button[class='btn btn-small export-button hvrbl ']")
+        export_button = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, "button[class='btn btn-small export-button hvrbl ']"))
+        )
         export_button.click()
         print(f"Export for {portfolio} started successfully.")
         
@@ -208,9 +222,13 @@ try:
                     print(f"Deleted the original CSV file {csv_file_path}")
 
     # Logout
-    exit_btn = driver.find_element(By.CSS_SELECTOR, "a[class='btn btn-small dropdown-toggle']")
+    exit_btn = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.CSS_SELECTOR, "a[class='btn btn-small dropdown-toggle']"))
+    )
     exit_btn.click()
-    logout = driver.find_element(By.XPATH, "//a[contains(text(),'Logout')]")
+    logout = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'Logout')]"))
+    )
     logout.click()
     time.sleep(5)
 
@@ -218,4 +236,3 @@ except Exception as e:
     print(f"An error occurred: {e}")
 finally:
     driver.quit()
-
