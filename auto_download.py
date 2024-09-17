@@ -31,9 +31,9 @@ def upload_files_to_sftp(hostname, username, password, local_files, remote_folde
         # Automatically add the server's host key (not recommended for production use)
         client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         
-        # Connect to the server
+        # Connect to the server with a higher timeout for the banner
         print(f"Connecting to {hostname} on port {port}...")
-        client.connect(hostname, port, username, password)
+        client.connect(hostname, port, username, password, banner_timeout=200)
         print("Connected successfully!")
         
         # Open an SFTP session
@@ -54,6 +54,7 @@ def upload_files_to_sftp(hostname, username, password, local_files, remote_folde
 
     except Exception as e:
         print(f"An error occurred during SFTP upload: {e}")
+
 
 # Set up headless mode for GitHub Actions environment
 chrome_options = webdriver.ChromeOptions()
@@ -271,7 +272,7 @@ try:
     sftp_hostname = os.getenv("SFTP_HOSTNAME")
     sftp_username = os.getenv("SFTP_USERNAME")
     sftp_password = os.getenv("SFTP_PASSWORD")
-    sftp_port = int(os.getenv("SFTP_PORT"))
+    sftp_port =  22  # Default to 22 if not set
 
     remote_folder = os.getenv("REMOTE_FOLDER")
 
