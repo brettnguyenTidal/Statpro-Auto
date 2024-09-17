@@ -1,3 +1,6 @@
+import paramiko
+import os
+import shutil
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -6,8 +9,6 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.keys import Keys
 import time
-import os
-import shutil
 import openpyxl
 import csv
 from datetime import datetime
@@ -15,15 +16,44 @@ from datetime import datetime
 # Function to convert text to number
 def convert_to_number(value):
     try:
-        # Try to convert to integer
-        return int(value)
+        return int(value)  # Try to convert to integer
     except ValueError:
         try:
-            # convert to float
-            return float(value)
+            return float(value)  # Try to convert to float
         except ValueError:
-            # Return the original value if conversion fails
-            return value
+            return value  # Return the original value if conversion fails
+
+# Function to upload files to SFTP
+def upload_files_to_sftp(hostname, username, password, local_files, remote_folder, port=22):
+    try:
+        # Create an SSH client object
+        client = paramiko.SSHClient()
+        # Automatically add the server's host key (not recommended for production use)
+        client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        
+        # Connect to the server
+        print(f"Connecting to {hostname} on port {port}...")
+        client.connect(hostname, port, username, password)
+        print("Connected successfully!")
+        
+        # Open an SFTP session
+        sftp = client.open_sftp()
+        print("SFTP session established.")
+        
+        # Upload each file
+        for local_file in local_files:
+            remote_path = f"{remote_folder}/{os.path.basename(local_file)}"
+            print(f"Uploading {local_file} to {remote_path}...")
+            sftp.put(local_file, remote_path)
+            print(f"File {local_file} uploaded successfully.")
+        
+        # Close the SFTP session and the SSH client
+        sftp.close()
+        client.close()
+        print("SFTP session closed.")
+
+    except Exception as e:
+        print(f"An error occurred during SFTP upload: {e}")
 
 # Set up headless mode for GitHub Actions environment
 chrome_options = webdriver.ChromeOptions()
@@ -31,7 +61,6 @@ chrome_options.add_argument("--headless")
 chrome_options.add_argument("--no-sandbox")
 chrome_options.add_argument("--disable-dev-shm-usage")
 chrome_options.add_argument("--window-size=1920,1080")
-
 
 # Set download path within the repository
 download_path = os.path.join(os.getcwd(), "downloads")
@@ -104,7 +133,6 @@ try:
         "Return Stacked Global Stocks & Bonds ETF",
         "Return Stacked Bonds & Futures Yield ETF",
         "Return Stacked U.S. Stocks & Futures Yield ETF"
-         
     ]
 
     for portfolio in portfolios:
@@ -151,7 +179,7 @@ try:
         portfolio_option = WebDriverWait(driver, 10).until(
             EC.element_to_be_clickable((By.CSS_SELECTOR, f"td[data-title='{portfolio}']"))
         )
-         # Use JavaScript to click the element
+        # Use JavaScript to click the element
         driver.execute_script("arguments[0].click();", portfolio_option)
 
         time.sleep(5)
@@ -225,6 +253,9 @@ try:
                     os.remove(csv_file_path)
                     print(f"Deleted the original CSV file {csv_file_path}")
 
+    # Collect all downloaded Excel files for upload
+    files_to_upload = [os.path.join(download_path, f) for f in os.listdir(download_path) if f.endswith('.xlsx')]
+    
     # Logout
     exit_btn = WebDriverWait(driver, 10).until(
         EC.element_to_be_clickable((By.CSS_SELECTOR, "a[class='btn btn-small dropdown-toggle']"))
@@ -235,6 +266,17 @@ try:
     )
     logout.click()
     time.sleep(5)
+
+    # SFTP upload credentials
+    sftp_hostname = os.getenv("SFTP_HOSTNAME")
+    sftp_username = os.getenv("SFTP_USERNAME")
+    sftp_password = os.getenv("SFTP_PASSWORD")
+    sftp_port = int(os.getenv("SFTP_PORT"))
+
+    remote_folder = os.getenv("REMOTE_FOLDER")
+
+    # Upload files to SFTP server
+    upload_files_to_sftp(sftp_hostname, sftp_username, sftp_password, files_to_upload, remote_folder, port=sftp_port)
 
 except Exception as e:
     print(f"An error occurred: {e}")
